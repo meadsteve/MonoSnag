@@ -27,7 +27,7 @@ class BugsnagHandler extends AbstractProcessingHandler
      */
     protected $client;
 
-    function __construct(\Bugsnag_Client $client, $level = Logger::ERROR, $bubble = true)
+    public function __construct(\Bugsnag_Client $client, $level = Logger::ERROR, $bubble = true)
     {
         parent::__construct($level, $bubble);
         $this->client = $client;
@@ -40,7 +40,8 @@ class BugsnagHandler extends AbstractProcessingHandler
      * @param  array $record
      * @return void
      */
-    protected function write(array $record) {
+    protected function write(array $record)
+    {
         $severity = $this->getSeverity($record['level']);
         if (isset($record['context']['exception'])) {
             $this->client->notifyException(
@@ -66,8 +67,7 @@ class BugsnagHandler extends AbstractProcessingHandler
     {
         if (isset($this->severityMapping[$errorCode])) {
             return $this->severityMapping[$errorCode];
-        }
-        else {
+        } else {
             return $this->severityMapping[Logger::ERROR];
         }
     }

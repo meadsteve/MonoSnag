@@ -1,5 +1,7 @@
 <?php
 
+namespace MeadSteve\MonoSnag\Tests;
+
 use MeadSteve\MonoSnag\BugsnagHandler;
 use Monolog\Logger;
 use Prophecy\Argument;
@@ -49,6 +51,4 @@ class BugsnagHandlerTest extends ProphecyTestCase
         $this->mockBugsnag->notifyException($sentException, Argument::cetera())->shouldBeCalledTimes(1);
         $this->monolog->addError("Oh no!", array("exception" => $sentException));
     }
-
 }
- 
