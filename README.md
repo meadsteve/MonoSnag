@@ -2,7 +2,7 @@ RayGunolog
 ==========
 [![Build Status](https://travis-ci.org/meadsteve/MonoSnag.png?branch=master)](https://travis-ci.org/meadsteve/MonoSnag)
 
-Monolog Handler connection to raygun.io.
+Monolog Handler connection to [Bugsnag](bugsnag.com)
 
 Installation
 ------------
