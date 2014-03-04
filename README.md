@@ -1,5 +1,7 @@
 RayGunolog
 ==========
+[![Build Status](https://travis-ci.org/meadsteve/MonoSnag.png?branch=master)](https://travis-ci.org/meadsteve/MonoSnag)
+
 Monolog Handler connection to raygun.io.
 
 Installation
@@ -8,7 +10,7 @@ Via Composer:
 Add the following to your composer.json:
 ```js
   "require": {
-        "mead-steve/mono-snag": "dev-master"
+        "mead-steve/mono-snag": "1.*"
     }
 ```
 
