@@ -1,0 +1,7 @@
+<phpunit bootstrap="bootstrap.php">
+    <testsuites>
+        <testsuite name="MonoSnag">
+            <directory>unit-tests</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

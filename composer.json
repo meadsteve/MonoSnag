@@ -1,0 +1,28 @@
+{
+    "name": "mead-steve/mono-snag",
+    "description": "Bugsnag integration for monolog. An abstract handler that sends messages to Bugsnag",
+    "keywords": ["bugsnag", "monolog", "logging", "error"],
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Steve B",
+            "email": "meadsteve@gmail.com"
+        }
+    ],
+
+    "require" : {
+        "monolog/monolog": "1.*",
+        "bugsnag/bugsnag": "2.*"
+    },
+
+    "require-dev": {
+        "phpspec/prophecy-phpunit": "1.*"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "MeadSteve\\MonoSnag\\": "src/"
+        }
+    }
+}
