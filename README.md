@@ -1,4 +1,4 @@
-RayGunolog
+MonoSnag
 ==========
 [![Build Status](https://travis-ci.org/meadsteve/MonoSnag.png?branch=master)](https://travis-ci.org/meadsteve/MonoSnag)
 
