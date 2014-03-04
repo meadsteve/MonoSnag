@@ -51,4 +51,35 @@ class BugsnagHandlerTest extends ProphecyTestCase
         $this->mockBugsnag->notifyException($sentException, Argument::cetera())->shouldBeCalledTimes(1);
         $this->monolog->addError("Oh no!", array("exception" => $sentException));
     }
+
+    /**
+     * The three arguments below are provided by:
+     * @dataProvider provideMappedSeverities
+     *
+     */
+    public function testNotifyGetsPassedCorrectlyMappedSeverity($monologLevel, $expectedSeverity)
+    {
+        // Update the tested handler to always send messages rather than just errors.
+        $this->monolog->popHandler($this->testedHandler);
+        $this->testedHandler = new BugsnagHandler($this->mockBugsnag->reveal(), Logger::DEBUG);
+        $this->monolog->pushHandler($this->testedHandler);
+
+        $errorMessage = "Oh no!";
+        $this->mockBugsnag->notify(Argument::any(), Argument::any(), $expectedSeverity)->shouldBeCalledTimes(1);
+        $this->monolog->log($monologLevel, $errorMessage);
+    }
+
+    public function provideMappedSeverities()
+    {
+        return array(
+            array(Logger::DEBUG,     "info"),
+            array(Logger::INFO,      "info"),
+            array(Logger::NOTICE,    "info"),
+            array(Logger::WARNING,   "warning"),
+            array(Logger::ERROR,     "error"),
+            array(Logger::CRITICAL,  "error"),
+            array(Logger::ALERT,     "fatal"),
+            array(Logger::EMERGENCY, "fatal")
+        );
+    }
 }
