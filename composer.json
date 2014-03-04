@@ -18,7 +18,7 @@
 
     "require-dev": {
         "phpspec/prophecy-phpunit": "1.*",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": "1.5.*"
     },
 
     "autoload": {
