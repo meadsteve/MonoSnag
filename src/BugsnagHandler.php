@@ -50,7 +50,8 @@ class BugsnagHandler extends AbstractProcessingHandler
                 $severity
             );
         } else {
-            $this->client->notify(
+            $this->client->notifyError(
+                $severity,
                 (string) $record['message'],
                 $record,
                 $severity
