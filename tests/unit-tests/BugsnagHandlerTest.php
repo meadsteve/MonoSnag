@@ -34,14 +34,14 @@ class BugsnagHandlerTest extends ProphecyTestCase
     public function testHandlerDefaultsToErrorOnly()
     {
         $this->mockBugsnag->notifyException(Argument::any(), Argument::cetera())->shouldNotBeCalled();
-        $this->mockBugsnag->notify(Argument::any(), Argument::cetera())->shouldNotBeCalled();
+        $this->mockBugsnag->notifyError(Argument::any(), Argument::cetera())->shouldNotBeCalled();
         $this->monolog->addInfo("Hello World");
     }
 
     public function testNotifyIsCalledOnErrors()
     {
         $errorMessage = "Oh no!";
-        $this->mockBugsnag->notify($errorMessage, Argument::cetera())->shouldBeCalledTimes(1);
+        $this->mockBugsnag->notifyError(Argument::any(), $errorMessage, Argument::cetera())->shouldBeCalledTimes(1);
         $this->monolog->addError($errorMessage);
     }
 
@@ -65,7 +65,7 @@ class BugsnagHandlerTest extends ProphecyTestCase
         $this->monolog->pushHandler($this->testedHandler);
 
         $errorMessage = "Oh no!";
-        $this->mockBugsnag->notify(Argument::any(), Argument::any(), $expectedSeverity)->shouldBeCalledTimes(1);
+        $this->mockBugsnag->notifyError($expectedSeverity, Argument::any(), Argument::any(), $expectedSeverity)->shouldBeCalledTimes(1);
         $this->monolog->log($monologLevel, $errorMessage);
     }
 
