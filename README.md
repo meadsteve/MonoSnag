@@ -3,7 +3,7 @@ MonoSnag
 [![Build Status](https://travis-ci.org/meadsteve/MonoSnag.png?branch=master)](https://travis-ci.org/meadsteve/MonoSnag)
 [![Coverage Status](https://coveralls.io/repos/meadsteve/MonoSnag/badge.png?branch=master)](https://coveralls.io/r/meadsteve/MonoSnag?branch=master)
 
-Monolog Handler connection to [Bugsnag](bugsnag.com)
+Monolog Handler connection to [Bugsnag](http://bugsnag.com)
 
 Installation
 ------------
