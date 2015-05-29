@@ -12,8 +12,8 @@
     ],
 
     "require" : {
-        "monolog/monolog": "1.*",
-        "bugsnag/bugsnag": "2.*"
+        "monolog/monolog": "^1.7.0",
+        "bugsnag/bugsnag": "^2.1.4"
     },
 
     "require-dev": {
