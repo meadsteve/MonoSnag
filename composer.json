@@ -13,7 +13,7 @@
 
     "require" : {
         "monolog/monolog": "^1.7.0",
-        "bugsnag/bugsnag": "^2.1.4"
+        "bugsnag/bugsnag": ">=2.1.4 <2.2.5"
     },
 
     "require-dev": {
