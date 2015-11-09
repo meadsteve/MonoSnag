@@ -18,8 +18,8 @@ class BugsnagHandler extends AbstractProcessingHandler
         Logger::WARNING   => 'warning',
         Logger::ERROR     => 'error',
         Logger::CRITICAL  => 'error',
-        Logger::ALERT     => 'fatal',
-        Logger::EMERGENCY => 'fatal'
+        Logger::ALERT     => 'error',
+        Logger::EMERGENCY => 'error'
     );
 
     /**

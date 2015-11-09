@@ -78,8 +78,8 @@ class BugsnagHandlerTest extends ProphecyTestCase
             array(Logger::WARNING,   "warning"),
             array(Logger::ERROR,     "error"),
             array(Logger::CRITICAL,  "error"),
-            array(Logger::ALERT,     "fatal"),
-            array(Logger::EMERGENCY, "fatal")
+            array(Logger::ALERT,     "error"),
+            array(Logger::EMERGENCY, "error")
         );
     }
 }
