@@ -14,7 +14,7 @@ Via Composer:
 Add the following to your composer.json:
 ```js
   "require": {
-        "mead-steve/mono-snag": "1.*"
+        "mead-steve/mono-snag": "^2.0.0"
     }
 ```
 
