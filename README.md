@@ -20,7 +20,7 @@ you should already have bugsnag and monolog required so your composer.json shoul
         ...,
         "monolog/monolog": "____",
         "bugsnag/bugsnag": "____",
-        //...,
+        ...,
         "mead-steve/mono-snag": "^2.0.0"
     }
 ```
