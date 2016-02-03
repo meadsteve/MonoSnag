@@ -12,7 +12,7 @@ Installation
 ------------
 Via Composer using
 ```shell
-composer require mead-steve/mono-snag 2.0.0
+composer require mead-steve/mono-snag:^2.0.0
 ```
 you should already have bugsnag and monolog required so your composer.json should look like:
 ```js
