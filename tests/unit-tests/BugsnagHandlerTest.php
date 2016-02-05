@@ -7,10 +7,10 @@ use Monolog\Logger;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTestCase;
 
-class BugsnagHandlerTest extends ProphecyTestCase
+class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
 {
       /**
-     * @var BugsnagHandler
+     * @var BugsnagHandlerz
      */
     protected $testedHandler;
 

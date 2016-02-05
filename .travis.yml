@@ -9,7 +9,7 @@ php:
 
 install: composer install
 script:
-  - phpunit --configuration tests/FullTests.xml --coverage-text --coverage-clover ./build/logs/clover.xml
+  - ./vendor/bin/phpunit --configuration tests/FullTests.xml --coverage-text --coverage-clover ./build/logs/clover.xml
   - ./vendor/bin/phpcs --standard=PSR2 src/
 
 after_script: php vendor/bin/coveralls

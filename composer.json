@@ -17,8 +17,8 @@
     },
 
     "require-dev": {
-        "phpspec/prophecy-phpunit": "1.*",
-        "squizlabs/php_codesniffer": "1.5.*",
+        "phpunit/phpunit": "^5.2",
+        "squizlabs/php_codesniffer": "^1.5.0",
         "satooshi/php-coveralls"  : "~0.6"
     },
 
