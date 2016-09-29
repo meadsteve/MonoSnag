@@ -14,7 +14,7 @@
     "require" : {
         "php": "^5.6 | ^7.0",
         "monolog/monolog": "^1.7.0",
-        "bugsnag/bugsnag": "^2.2.5"
+        "bugsnag/bugsnag": "^3.4"
     },
 
     "require-dev": {
