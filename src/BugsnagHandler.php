@@ -23,7 +23,7 @@ class BugsnagHandler extends AbstractProcessingHandler
     );
 
     /**
-     * @var \Bugsnag_Client
+     * @var \Bugsnag\Client
      */
     protected $client;
 
@@ -46,15 +46,23 @@ class BugsnagHandler extends AbstractProcessingHandler
         if (isset($record['context']['exception'])) {
             $this->client->notifyException(
                 $record['context']['exception'],
-                $record,
-                $severity
+                function(\Bugsnag\Report $report) use ($record, $severity) {
+                    $report->setSeverity($severity);
+                    if (isset($record['extra'])) {
+                        $report->setMetaData($record['extra']);
+                    }
+                }
             );
         } else {
             $this->client->notifyError(
-                $severity,
                 (string) $record['message'],
-                $record,
-                $severity
+                (string) $record['formatted'],
+                function(\Bugsnag\Report $report) use ($record, $severity) {
+                    $report->setSeverity($severity);
+                    if (isset($record['extra'])) {
+                        $report->setMetaData($record['extra']);
+                    }
+                }
             );
         }
     }
