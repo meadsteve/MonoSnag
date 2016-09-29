@@ -27,7 +27,7 @@ class BugsnagHandler extends AbstractProcessingHandler
      */
     protected $client;
 
-    public function __construct(\Bugsnag_Client $client, $level = Logger::ERROR, $bubble = true)
+    public function __construct(\Bugsnag\Client $client, $level = Logger::ERROR, $bubble = true)
     {
         parent::__construct($level, $bubble);
         $this->client = $client;
