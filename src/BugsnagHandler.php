@@ -46,7 +46,7 @@ class BugsnagHandler extends AbstractProcessingHandler
         if (isset($record['context']['exception'])) {
             $this->client->notifyException(
                 $record['context']['exception'],
-                function(\Bugsnag\Report $report) use ($record, $severity) {
+                function (\Bugsnag\Report $report) use ($record, $severity) {
                     $report->setSeverity($severity);
                     if (isset($record['extra'])) {
                         $report->setMetaData($record['extra']);
@@ -57,7 +57,7 @@ class BugsnagHandler extends AbstractProcessingHandler
             $this->client->notifyError(
                 (string) $record['message'],
                 (string) $record['formatted'],
-                function(\Bugsnag\Report $report) use ($record, $severity) {
+                function (\Bugsnag\Report $report) use ($record, $severity) {
                     $report->setSeverity($severity);
                     if (isset($record['extra'])) {
                         $report->setMetaData($record['extra']);
