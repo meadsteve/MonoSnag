@@ -5,6 +5,7 @@ namespace MeadSteve\MonoSnag\Tests;
 use MeadSteve\MonoSnag\BugsnagHandler;
 use Monolog\Logger;
 use Prophecy\Argument;
+use Prophecy\Promise\CallbackPromise;
 use Prophecy\PhpUnit\ProphecyTestCase;
 
 class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
@@ -20,11 +21,12 @@ class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
     protected $monolog;
 
     protected $mockBugsnag;
+    protected $mockReport;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->mockBugsnag = $this->prophesize('\Bugsnag_Client');
+        $this->mockBugsnag = $this->prophesize('\Bugsnag\Client');
         $this->testedHandler = new BugsnagHandler($this->mockBugsnag->reveal());
 
         $this->monolog = new Logger("TestLogger");
@@ -41,7 +43,7 @@ class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
     public function testNotifyIsCalledOnErrors()
     {
         $errorMessage = "Oh no!";
-        $this->mockBugsnag->notifyError(Argument::any(), $errorMessage, Argument::cetera())->shouldBeCalledTimes(1);
+        $this->mockBugsnag->notifyError($errorMessage, Argument::type('string'), Argument::cetera())->shouldBeCalledTimes(1);
         $this->monolog->addError($errorMessage);
     }
 
@@ -65,7 +67,14 @@ class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
         $this->monolog->pushHandler($this->testedHandler);
 
         $errorMessage = "Oh no!";
-        $this->mockBugsnag->notifyError($expectedSeverity, Argument::any(), Argument::any(), $expectedSeverity)->shouldBeCalledTimes(1);
+        $mockReport = $this->prophesize('\Bugsnag\Report');
+        $mockReport->setSeverity($expectedSeverity)->shouldBeCalledTimes(1);
+        $mockReport->setMetaData(Argument::cetera())->shouldBeCalledTimes(1);
+        $this->mockBugsnag->notifyError($errorMessage, Argument::type('string'), Argument::cetera())->will(function ($args) use ($mockReport) {
+            if ($args[2]) {
+                $args[2]($mockReport->reveal());
+            }
+        })->shouldBeCalledTimes(1);
         $this->monolog->log($monologLevel, $errorMessage);
     }
 
