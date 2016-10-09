@@ -36,7 +36,7 @@ Logger::ERROR and above and send it to Bugsnag.
 
 $logger  = new Monolog\Logger("Example");
 
-$bugsnagClient = new Bugsnag_Client('YOUR-BUGSNAG-API-KEY-HERE');
+$bugsnagClient = new Bugsnag\Client('YOUR-BUGSNAG-API-KEY-HERE');
 //... bugsnag specific config goes here.
 $bugsnagHandler = new \MeadSteve\MonoSnag\BugsnagHandler($bugsnagClient);
 
