@@ -46,3 +46,29 @@ $logger->pushHandler($bugsnagHandler);
 $logger->addError("oh no!", array('exception' => new \Exception("ohnoception")));
 
 ```
+
+Avoid Handler in stacktrace
+---------------------------
+
+```
+        $bugsnagClient->registerCallback(function ($report) {
+            $stacktrace = $report->getStacktrace();
+
+            // Monolog uses MonoSnag for logs, and bugsnag handler logs directly
+            $isAMonologHandledLog = $stacktrace->getFrames()[0]['method'] === 'MeadSteve\MonoSnag\BugsnagHandler::write';
+
+            if (!$isAMonologHandledLog) {
+                // Do nothing
+                return;
+            }
+
+            // Remove The first frame
+            $stacktrace->removeFrame(0);
+
+            // Remove all the trace about Monolog as it's not interesting
+            while(substr($stacktrace->getFrames()[0]['method'], 0, 8) === 'Monolog\\') {
+                $stacktrace->removeFrame(0);
+            }
+
+        });
+```
