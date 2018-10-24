@@ -53,7 +53,7 @@ class BugsnagHandler extends AbstractProcessingHandler
         $isUncaughtException = !empty($context['exception']) && strpos($record['message'], 'Uncaught Exception') === 0;
 
         if ($isUncaughtException) {
-            $report = Bugsnag\Report::fromPHPThrowable(
+            $report = \Bugsnag\Report::fromPHPThrowable(
                 $this->client->getConfig(),
                 $context['exception']
             );
@@ -72,7 +72,7 @@ class BugsnagHandler extends AbstractProcessingHandler
         if ($isPhpError) {
             $isFatal = strpos($record['message'], 'Fatal Error') === 0;
 
-            $report = Bugsnag\Report::fromPHPError(
+            $report = \Bugsnag\Report::fromPHPError(
                 $this->client->getConfig(),
                 $context['code'],
                 $context['message'],
