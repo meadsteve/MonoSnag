@@ -27,13 +27,9 @@ class BugsnagHandler extends AbstractProcessingHandler
      */
     protected $client;
 
-    protected $putContextInExtra;
-
-    public function __construct(\Bugsnag\Client $client, $level = Logger::ERROR, $bubble = true, $putContextInExtra = true)
-    {
+    public function __construct(\Bugsnag\Client $client, $level = Logger::ERROR, $bubble = true) {
         parent::__construct($level, $bubble);
         $this->client = $client;
-        $this->putContextInExtra = $putContextInExtra;
 
         $client->registerCallback(function ($report) {
             $stacktrace = $report->getStacktrace();
@@ -67,13 +63,16 @@ class BugsnagHandler extends AbstractProcessingHandler
      * @param  array $record
      * @return void
      */
-    protected function write(array $record)
-    {
-        // This code is from Bugsnag\Handler
-        // We adapt calls to Bugsnag to have the same Log Behavior than Bugsnag native handler
+    protected function write(array $record) {
+
         $context = isset($record['context']) ? $record['context'] : array();
         $isPhpError = isset($context['code']) && !empty($context['message']) && !empty($context['file']) && isset($context['line']);
         $isUncaughtException = !empty($context['exception']) && strpos($record['message'], 'Uncaught Exception') === 0;
+
+        $extra = isset($record['extra']) ? $record['extra'] : array();
+        $context = isset($record['context']) ? $record['context'] : array();
+        $extraAndContext = $extra + $context;
+
         if ($isUncaughtException) {
             $report = \Bugsnag\Report::fromPHPThrowable(
                 $this->client->getConfig(),
@@ -84,9 +83,12 @@ class BugsnagHandler extends AbstractProcessingHandler
             $report->setSeverityReason([
                 'type' => 'unhandledException',
             ]);
+            unset($extraAndContext['exception']);
+            $report->setMetaData($extraAndContext);
             $this->client->notify($report);
             return;
         }
+
         if ($isPhpError) {
             $isFatal = strpos($record['message'], 'Fatal Error') === 0;
             $report = \Bugsnag\Report::fromPHPError(
@@ -110,40 +112,36 @@ class BugsnagHandler extends AbstractProcessingHandler
                     ],
                 ]);
             }
+            unset($extraAndContext['code'], $extraAndContext['message'], $extraAndContext['file'], $extraAndContext['line']);
             $report->setUnhandled(true);
+            $report->setMetaData($extraAndContext);
+
             $this->client->notify($report);
             return;
         }
+
         $severity = $this->getSeverity($record['level']);
+
         if (isset($record['context']['exception'])) {
             $this->client->notifyException(
                 $record['context']['exception'],
-                function (\Bugsnag\Report $report) use ($record, $severity) {
+                function (\Bugsnag\Report $report) use ($record, $severity, $extraAndContext) {
                     $report->setSeverity($severity);
-                    if (isset($record['extra'])) {
-                        $report->setMetaData($record['extra']);
-                    }
+                    $report->setMetaData($extraAndContext);
                 }
             );
         } else {
             $this->client->notifyError(
                 (string) $record['message'],
                 (string) $record['formatted'],
-                function (\Bugsnag\Report $report) use ($record, $severity) {
+                function (\Bugsnag\Report $report) use ($record, $severity, $extraAndContext) {
                     $report->setSeverity($severity);
-                    if ($this->putContextInExtra && isset($record['context'])) {
-                        if (!isset($record['extra'])) {
-                            $record['extra'] = array();
-                        }
-                        $record['extra'] += $record['context'];
-                    }
-                    if (isset($record['extra'])) {
-                        $report->setMetaData($record['extra']);
-                    }
+                    $report->setMetaData($extraAndContext);
                 }
             );
         }
     }
+    
     /**
      * Returns the Bugsnag severiry from a monolog error code.
      * @param int $errorCode - one of the Logger:: constants.
