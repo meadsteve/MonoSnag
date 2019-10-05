@@ -1,7 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace MeadSteve\MonoSnag\Tests;
 
+use Bugsnag\Client as BugsnagClient;
+use Bugsnag\Report as BugsnagReport;
 use MeadSteve\MonoSnag\BugsnagHandler;
 use Monolog\Logger;
 use Prophecy\Argument;
@@ -10,8 +12,8 @@ use Prophecy\PhpUnit\ProphecyTestCase;
 
 class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
 {
-      /**
-     * @var BugsnagHandlerz
+    /**
+     * @var BugsnagHandler
      */
     protected $testedHandler;
 
@@ -26,32 +28,33 @@ class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->mockBugsnag = $this->prophesize('\Bugsnag\Client');
+        $this->mockBugsnag = $this->prophesize(BugsnagClient::class);
         $this->testedHandler = new BugsnagHandler($this->mockBugsnag->reveal());
 
-        $this->monolog = new Logger("TestLogger");
+        $this->monolog = new Logger('TestLogger');
         $this->monolog->pushHandler($this->testedHandler);
     }
 
-    public function testHandlerDefaultsToErrorOnly()
+    public function testHandlerDefaultsToErrorOnly(): void
     {
         $this->mockBugsnag->notifyException(Argument::any(), Argument::cetera())->shouldNotBeCalled();
         $this->mockBugsnag->notifyError(Argument::any(), Argument::cetera())->shouldNotBeCalled();
-        $this->monolog->addInfo("Hello World");
+        $this->monolog->info('Hello World');
     }
 
-    public function testNotifyIsCalledOnErrors()
+    public function testNotifyIsCalledOnErrors(): void
     {
-        $errorMessage = "Oh no!";
-        $this->mockBugsnag->notifyError($errorMessage, Argument::type('string'), Argument::cetera())->shouldBeCalledTimes(1);
-        $this->monolog->addError($errorMessage);
+        $errorMessage = 'Oh no!';
+        $this->mockBugsnag->notifyError($errorMessage, Argument::type('string'),
+            Argument::cetera())->shouldBeCalledTimes(1);
+        $this->monolog->error($errorMessage);
     }
 
-    public function testNotifyExceptionGetsCalledIfExceptionIsAvailable()
+    public function testNotifyExceptionGetsCalledIfExceptionIsAvailable(): void
     {
-        $sentException = new \Exception("Testing");
+        $sentException = new \Exception('Testing');
         $this->mockBugsnag->notifyException($sentException, Argument::cetera())->shouldBeCalledTimes(1);
-        $this->monolog->addError("Oh no!", array("exception" => $sentException));
+        $this->monolog->error('Oh no!', ['exception' => $sentException]);
     }
 
     /**
@@ -59,36 +62,38 @@ class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
      * @dataProvider provideMappedSeverities
      *
      */
-    public function testNotifyGetsPassedCorrectlyMappedSeverity($monologLevel, $expectedSeverity)
+    public function testNotifyGetsPassedCorrectlyMappedSeverity($monologLevel, $expectedSeverity): void
     {
         // Update the tested handler to always send messages rather than just errors.
         $this->monolog->popHandler($this->testedHandler);
         $this->testedHandler = new BugsnagHandler($this->mockBugsnag->reveal(), Logger::DEBUG);
         $this->monolog->pushHandler($this->testedHandler);
 
-        $errorMessage = "Oh no!";
-        $mockReport = $this->prophesize('\Bugsnag\Report');
+        $errorMessage = 'Oh no!';
+        $mockReport = $this->prophesize(BugsnagReport::class);
         $mockReport->setSeverity($expectedSeverity)->shouldBeCalledTimes(1);
         $mockReport->setMetaData(Argument::cetera())->shouldBeCalledTimes(1);
-        $this->mockBugsnag->notifyError($errorMessage, Argument::type('string'), Argument::cetera())->will(function ($args) use ($mockReport) {
-            if ($args[2]) {
-                $args[2]($mockReport->reveal());
+        $this->mockBugsnag->notifyError($errorMessage, Argument::type('string'), Argument::cetera())->will(
+            function ($args) use ($mockReport) {
+                if ($args[2]) {
+                    $args[2]($mockReport->reveal());
+                }
             }
-        })->shouldBeCalledTimes(1);
+        )->shouldBeCalledTimes(1);
         $this->monolog->log($monologLevel, $errorMessage);
     }
 
-    public function provideMappedSeverities()
+    public function provideMappedSeverities(): array
     {
-        return array(
-            array(Logger::DEBUG,     "info"),
-            array(Logger::INFO,      "info"),
-            array(Logger::NOTICE,    "info"),
-            array(Logger::WARNING,   "warning"),
-            array(Logger::ERROR,     "error"),
-            array(Logger::CRITICAL,  "error"),
-            array(Logger::ALERT,     "error"),
-            array(Logger::EMERGENCY, "error")
-        );
+        return [
+            [Logger::DEBUG, 'info'],
+            [Logger::INFO, 'info'],
+            [Logger::NOTICE, 'info'],
+            [Logger::WARNING, 'warning'],
+            [Logger::ERROR, 'error'],
+            [Logger::CRITICAL, 'error'],
+            [Logger::ALERT, 'error'],
+            [Logger::EMERGENCY, 'error']
+        ];
     }
 }
