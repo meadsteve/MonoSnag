@@ -6,10 +6,9 @@ use Bugsnag\Client as BugsnagClient;
 use Bugsnag\Report as BugsnagReport;
 use MeadSteve\MonoSnag\BugsnagHandler;
 use Monolog\Logger;
-use Monolog\Test\TestCase;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\PhpUnit\ProphecyTestCase;
 
 class BugsnagHandlerTest extends TestCase
 {
