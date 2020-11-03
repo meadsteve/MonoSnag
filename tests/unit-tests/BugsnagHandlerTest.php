@@ -8,12 +8,9 @@ use MeadSteve\MonoSnag\BugsnagHandler;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 class BugsnagHandlerTest extends TestCase
 {
-    use ProphecyTrait;
-
     /**
      * @var BugsnagHandler
      */
