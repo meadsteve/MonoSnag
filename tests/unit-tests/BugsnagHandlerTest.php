@@ -6,11 +6,10 @@ use Bugsnag\Client as BugsnagClient;
 use Bugsnag\Report as BugsnagReport;
 use MeadSteve\MonoSnag\BugsnagHandler;
 use Monolog\Logger;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Prophecy\Promise\CallbackPromise;
-use Prophecy\PhpUnit\ProphecyTestCase;
 
-class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
+class BugsnagHandlerTest extends TestCase
 {
     /**
      * @var BugsnagHandler
@@ -25,7 +24,7 @@ class BugsnagHandlerTest extends \PHPUnit_Framework_TestCase
     protected $mockBugsnag;
     protected $mockReport;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->mockBugsnag = $this->prophesize(BugsnagClient::class);

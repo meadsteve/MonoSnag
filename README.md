@@ -6,30 +6,20 @@ MonoSnag
 [![License](https://poser.pugx.org/mead-steve/mono-snag/license.svg)](https://packagist.org/packages/mead-steve/mono-snag)
 [![Monthly Downloads](https://poser.pugx.org/mead-steve/mono-snag/d/monthly.png)](https://packagist.org/packages/mead-steve/mono-snag)
 
-Monolog Handler connection to [Bugsnag](http://bugsnag.com)
+[Monolog](https://seldaek.github.io/monolog/) Handler connection to [Bugsnag](http://bugsnag.com)
 
 Installation
 ------------
 Via Composer using
 ```shell
-composer require mead-steve/mono-snag:^3.0.0
-```
-you should already have bugsnag and monolog required so your composer.json should look like:
-```js
-  "require": {
-        ...,
-        "monolog/monolog": "____",
-        "bugsnag/bugsnag": "____",
-        ...,
-        "mead-steve/mono-snag": "^3.0.0"
-    }
+composer require mead-steve/mono-snag
 ```
 
 
 Usage
 ------------
 
-A handler is provided that wraps up a Bugsnag client. By default the handler will grab anything at
+A handler is provided that wraps up a Bugsnag client. By default, the handler will grab anything at
 Logger::ERROR and above and send it to Bugsnag.
 
 ```php
