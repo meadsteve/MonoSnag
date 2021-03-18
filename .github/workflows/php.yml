@@ -1,4 +1,4 @@
-name: PHP Composer
+name: Test PHP 7 & 8
 
 on:
   push:
