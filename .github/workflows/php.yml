@@ -1,0 +1,40 @@
+name: PHP Composer
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['7.2', '7.3']
+    name: PHP ${{ matrix.php-versions }} Test on ${{ matrix.operating-system }}
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-versions }}
+        
+    - name: Check PHP Version
+      run: php -v
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest
+
+    - name: Test
+      run: ./vendor/bin/phpunit --configuration tests/FullTests.xml --coverage-text --coverage-clover ./build/logs/clover.xml
+      
+    - name: Check styling
+      run: ./vendor/bin/phpcs --standard=PSR2 src/
