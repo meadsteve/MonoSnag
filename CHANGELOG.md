@@ -1,4 +1,9 @@
 # Changelog
+## V4.1.0 (2021-03-18)
+* Support for php 8. Thanks to @snapshotpl
+
+## Some Versions missing
+sorry
 
 ## V2.0.0 (2015-11-09)
 
