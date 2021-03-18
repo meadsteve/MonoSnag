@@ -1,7 +1,5 @@
 MonoSnag
 ==========
-[![Build Status](https://travis-ci.org/meadsteve/MonoSnag.png?branch=master)](https://travis-ci.org/meadsteve/MonoSnag)
-[![Coverage Status](https://coveralls.io/repos/meadsteve/MonoSnag/badge.png?branch=master)](https://coveralls.io/r/meadsteve/MonoSnag?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/mead-steve/mono-snag/v/stable.svg)](https://packagist.org/packages/mead-steve/mono-snag)
 [![License](https://poser.pugx.org/mead-steve/mono-snag/license.svg)](https://packagist.org/packages/mead-steve/mono-snag)
 [![Monthly Downloads](https://poser.pugx.org/mead-steve/mono-snag/d/monthly.png)](https://packagist.org/packages/mead-steve/mono-snag)
